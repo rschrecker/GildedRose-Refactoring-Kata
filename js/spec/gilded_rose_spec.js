@@ -24,10 +24,9 @@ describe('Generic Item', function() {
     });
 
     it('decreases its quality', function () {
-        const gildedRose = new Shop([new Item('foo', 1, 2), new Item('foo2', 5, 55)]);
+        const gildedRose = new Shop([new Item('foo', 1, 2)]);
         const items = gildedRose.updateQuality();
         expect(items[0].quality).toEqual(1);
-        expect(items[1].quality).toEqual(54);
     });
 
     it('decreases its quality faster when sellIn <= 0', function () {
@@ -109,19 +108,23 @@ describe('Backstage passes', function() {
         expect(items[0].sellIn).toEqual(-1);
     });
 
-    it('increses in value correctly', function () {
-        const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 11, 0),
+    it('adjusts quality correctly', function () {
+        let gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 11, 0),
             new Item('Backstage passes to a TAFKAL80ETC concert', 6, 0),
             new Item('Backstage passes to a TAFKAL80ETC concert', 1, 0)]);
-        const items = gildedRose.updateQuality();
+        let items = gildedRose.updateQuality();
         expect(items[0].quality).toEqual(1);
         expect(items[1].quality).toEqual(2);
         expect(items[2].quality).toEqual(3);
-        const gildedRose2 = new Shop(items);
-        const items2 = gildedRose2.updateQuality();
-        expect(items2[0].quality).toEqual(3);
-        expect(items2[1].quality).toEqual(5);
-        expect(items2[2].quality).toEqual(0);
+        gildedRose = new Shop(items);
+        items = gildedRose.updateQuality();
+        expect(items[0].quality).toEqual(3);
+        expect(items[1].quality).toEqual(5);
+        expect(items[2].quality).toEqual(0);
+        gildedRose = new Shop(items);
+        items = gildedRose.updateQuality();
+        expect(items[2].quality).toEqual(0);
+
     });
 
 });
