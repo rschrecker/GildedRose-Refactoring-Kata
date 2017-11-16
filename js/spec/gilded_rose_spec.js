@@ -128,3 +128,40 @@ describe('Backstage passes', function() {
     });
 
 });
+
+
+describe('Conjured Item', function() {
+
+    it('decreases its sellIn value', function () {
+        const gildedRose = new Shop([new Item('Conjured foo', 1, 0)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].sellIn).toEqual(0);
+    });
+
+    it('decreases its sellIn value below 0', function () {
+        const gildedRose = new Shop([new Item('Conjured foo', 0, 0)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].sellIn).toEqual(-1);
+    });
+
+    it('decreases its quality', function () {
+        const gildedRose = new Shop([new Item('Conjured foo', 1, 4)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).toEqual(2);
+    });
+
+    it('decreases its quality faster when sellIn <= 0', function () {
+        const gildedRose = new Shop([new Item('Conjured foo', 0, 4), new Item('Conjured foo', -5, 5)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).toEqual(0);
+        expect(items[1].quality).toEqual(1);
+    });
+
+    it('does not decreases in quality below 0', function () {
+        const gildedRose = new Shop([new Item('Conjured foo', -5, 3), new Item('Conjured foo2', 5, 0)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).toEqual(0);
+        expect(items[1].quality).toEqual(0);
+    });
+
+});

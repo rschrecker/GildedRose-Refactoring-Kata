@@ -44,6 +44,14 @@ class Shop {
                     item.quality = 0
                 }
             }
+            else if (item.name.slice(0,'Conjured'.length) === 'Conjured') {
+                if (item.sellIn >0) {
+                    item.quality -= 2
+                }
+                else {
+                    item.quality -= 4
+                }
+            }
             else { //generic items
                 if (item.sellIn >0) {
                     item.quality -= 1
@@ -67,8 +75,6 @@ class Shop {
 
             item.sellIn -= 1;
         }
-
-
 
         return this.items;
     }
